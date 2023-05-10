@@ -85,5 +85,40 @@ function viewDepartments(){
         startPrompt();
     });
 }
+
+//View all Roles
+function viewRoles(){
+    const sql = `SELECT * FROM role`;
+    db.query(sql, (err, res) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+            return;
+        }
+        console.table(res);
+        startPrompt();
+    });
+}
+
+//View all Employees
+function viewEmployees(){
+    const sql = `SELECT employee.id, 
+    employee.first_name, 
+    employee.last_name, 
+    role.title AS job_title,
+    department.department_name, 
+    role.salary, 
+    CONCAT(manager.first_name, " ", manager.last_name) AS manager
+    FROM employee
+    LEFT JOIN role ON employee.role_id = role.id
+    LEFT JOIN department ON role.department_id = department.id
+    LEFT JOIN employee manager ON manager.id = employee.manager_id
+    ORDER BY employee.id`;
+    db.query(sql, (err, res) => {
+        if (err) throw err;
+        console.table(res);
+        startPrompt();
+    });
+}
+
    
 
