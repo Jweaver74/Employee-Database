@@ -40,6 +40,10 @@
   An application to manage a company's employee database
 
   ## LiveLink
+
+  ## Screenshot
+  ![Screenshot](./images/start%20screen.png)
+  ![Screenshot](./images/view%20employee.png)
   
 
 
@@ -72,7 +76,7 @@
 
   ## Challenge
   Joining the tables from the three that were created. I also wanted to be able to use the dotenv to hide sensitive information.  
-  
+
 
 
   ## GitHub
