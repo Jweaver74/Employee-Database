@@ -1,9 +1,9 @@
 const inquirer = require("inquirer");
-const mysql = require("mysql2/promise");
-const cTable = require("console.table");
 const express = require("express");
 const db = require("./config/connection");
-const { type } = require("tedious/lib/data-types/null");
+const mysql = require("mysql2/promise");
+
+
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -11,6 +11,8 @@ const app = express();
 // Express middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+
 
 //Default response for any other request (Not Found)
 app.use((req, res) => {
@@ -119,6 +121,130 @@ function viewEmployees(){
         startPrompt();
     });
 }
+
+//Add a Department
+function addDepartment(){
+    inquirer.prompt({
+        type: "input",
+        name: "department",
+        message: "What is the name of the department you would like to add?"
+    }).then(answer => {
+        const sql = `INSERT INTO department (department_name) VALUES (?)`;
+        db.query(sql, answer.department, (err, res) => {
+            if (err) throw err;
+            console.log("Department added.");
+            startPrompt();
+        });
+    });
+}
+
+//Add a Role
+function addRole(){
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "title",
+            message: "What is the name of the role you would like to add?"
+        },
+        {
+            type: "input",
+            name: "salary",
+            message: "What is the salary for this role?"
+        },
+        {
+            type: "input",
+            name: "department",
+            message: "What is the department ID for this role?"
+        }
+    ]).then(function(res){
+        db.query("INSERT INTO role(title, salary, department_id) VALUES (?,?,?)", [res,title, res.salary, res.department_id], function(err,data) {
+            if (err) {
+                res.status(500).json({ error: err.message });
+                startPrompt();
+            }
+            console.table(res);
+            startPrompt();
+        });
+    });
+
+        }
+
+//Add an Employee
+function addEmployee(){
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "first_name",
+            message: "What is the first name of the employee you would like to add?"
+        },
+        {
+            type: "input",
+            name: "last_name",
+            message: "What is the last name of the employee you would like to add?"
+        },
+        {
+            type: "input",
+            name: "role_id",
+            message: "What is the role ID for this employee?"
+        },
+        {
+            type: "input",
+            name: "manager_id",
+            message: "What is the manager ID for this employee?"
+        }
+    ]).then(function(res){
+        db.query("INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)", [res.first_name, res.last_name, res.role_id, res.manager_id], function(err,data) {
+            if (err) throw err;
+            console.log("Employee added.");
+
+            db.query(`SELECT * FROM employee`, (err, res) => {
+                if (err) {
+                res.status(500).json({ error: err.message });
+                startPrompt();
+            }
+            console.table(res);
+            startPrompt();
+        });
+    });
+});
+}
+
+//Update an Employee Role   
+function updateEmployee(){
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "employee_id",
+            message: "What is the ID of the employee you would like to update?"
+        },
+        {
+            type: "input",
+            name: "role_id",
+            message: "What is the new role ID for this employee?"
+        }
+    ]).then(function(res){
+        db.query("UPDATE employee SET role_id = ? WHERE id = ?", [res.role_id, res.employee_id], function(err,data) {
+            if (err) throw err;
+            console.log("Employee updated.");
+
+            db.query(`SELECT * FROM employee`, (err, res) => {
+                if (err) {
+                res.status(500).json({ error: err.message });
+                startPrompt();
+            }
+            console.table(res);
+            startPrompt();
+        });
+    });
+});
+}
+
+//Start the application
+startPrompt();
+
+        
+
+   
 
    
 

@@ -27,4 +27,3 @@ VALUES
 ('Sarah', 'James', 6, 5), 
 ('Tom', 'Allen', 7, NULL), 
 ('Mike', 'Smith', 8, 7);
-```
