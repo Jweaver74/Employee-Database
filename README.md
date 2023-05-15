@@ -11,6 +11,8 @@
 
   *[livelink](#livelink)
 
+  *[screenshot](#screenshot)
+
   *[description](#description)
 
   *[installation](#installation)
@@ -40,6 +42,7 @@
   An application to manage a company's employee database
 
   ## LiveLink
+  https://drive.google.com/file/d/1JTgS6m-fMAnGbHha2YnfNvfFeJLM6Kf2/view
 
   ## Screenshot
   ![Screenshot](./images/start%20screen.png)
